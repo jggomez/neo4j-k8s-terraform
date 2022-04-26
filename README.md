@@ -1,4 +1,4 @@
-# Neo4j k8s cluster - Terraform Scripts
+# Neo4j k8s cluster on GKE - Terraform Scripts
 
 ## Description
 
