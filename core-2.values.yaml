@@ -1,0 +1,40 @@
+neo4j:
+  name: "gke-neo4j-dev"
+  resources:
+    cpu: "1"
+    memory: "5Gi"
+  password: "PASSWORD"
+  acceptLicenseAgreement: "yes"
+  offlineMaintenanceModeEnabled: false
+
+volumes:
+  data:
+    mode: "volume"
+    volume:
+      gcePersistentDisk:
+        pdName: "core-disk-2"
+  plugins:
+    mode: "share"
+    share:
+      name: "data"
+
+livenessProbe:
+  failureThreshold: 20
+  timeoutSeconds: 10
+  periodSeconds: 5
+
+config:
+  dbms.memory.heap.initial_size: "1G"
+  dbms.memory.heap.max_size: "3G"
+  dbms.memory.pagecache.size: "1G"
+  dbms.allow_upgrade: "true"
+  dbms.directories.plugins: "/var/lib/neo4j/labs"
+  dbms.security.procedures.unrestricted: "apoc.*"
+  dbms.default_database: "contents"
+  metrics.enabled: "true"
+  metrics.namespaces.enabled: "false"
+  metrics.csv.interval: "10s"
+  metrics.csv.rotation.keep_number: "2"
+  metrics.csv.rotation.compression: "NONE"
+  dbms.transaction.timeout: "3m"
+  dbms.tx_log.rotation.retention_policy: "false"
