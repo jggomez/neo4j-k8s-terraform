@@ -329,6 +329,21 @@ CREATE DATABASE lessons;
 
 ## 6. Basic commands for monitoring neo4j cluster.
 
+Restart Neo4j
+
+```
+kubectl rollout restart statefulset/<neo4j-statefulset-name>
+kubectl rollout restart statefulset/core-1
+kubectl rollout restart statefulset/core-2
+kubectl rollout restart statefulset/core-3
+```
+
+Copy to pods
+
+```
+kubectl cp file default/core-1-0:/plugins/
+```
+
 Obtain the pods
 
 ```
