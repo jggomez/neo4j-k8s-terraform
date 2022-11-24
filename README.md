@@ -33,6 +33,8 @@ Obtain k8s cluster credentials
 
 ```
 gcloud container clusters get-credentials gke-neo4j-dev --zone="us-central1-a"
+Or
+gcloud container clusters get-credentials gke-neo4j-prd --zone="us-central1-a"
 ```
 
 Create the basic values of the yaml files with the properties for each core 
@@ -149,7 +151,7 @@ helm upgrade core-3 neo4j/neo4j-cluster-core -f core-3.values.yaml
 Set the correct project with gcloud and obtain credentials of the k8s cluster
 
 ```
-gcloud config set project PROJECT
+gcloud config set project wordboxdev
 gcloud container clusters get-credentials gke-neo4j-dev --zone="us-central1-a"
 ```
 
@@ -213,6 +215,16 @@ Delete the database you want to restore
 DROP DATABASE lessons;
 ```
 
+
+**You must put Neo4j pods into offline maintenance mode. Change the following property in yaml values file**
+
+
+Enter all pods, for example core-1-0 with the following command
+
+```
+kubectl exec -it core-1-0 -- bash
+```
+
 Download the backup inside the container
 
 ```
@@ -261,10 +273,10 @@ Create a backup inside this container
 bin/neo4j-admin backup --from=core-1-admin.default.svc.cluster.local:6362 --database=lessons --backup-dir=. --expand-commands
 ```
 
-Copy this backup-directory to local machine
+Copy this backup-directory to local machine in another console window
 
 ```
-kubectl cp core-1-0:/var/lib/neo4j/lessons backup-lessons/
+kubectl cp backup:/var/lib/neo4j/lessons backup-lessons/
 ```
 
 Compress a backup-directory
@@ -382,13 +394,4 @@ http://URL:7474/browser
 - [Terraform Helm Provider](https://registry.terraform.io/providers/hashicorp/helm/latest/docs)
 - [Configure a Neo4j Helm deployment](https://neo4j.com/docs/operations-manual/current/kubernetes/configuration/)
 
-
-
-
-
-Made with ❤ by  [jggomez](https://devhack.co).
-
-[![Twitter Badge](https://img.shields.io/badge/-@jggomezt-1ca0f1?style=flat-square&labelColor=1ca0f1&logo=twitter&logoColor=white&link=https://twitter.com/jggomezt)](https://twitter.com/jggomezt)
-[![Linkedin Badge](https://img.shields.io/badge/-jggomezt-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/jggomezt/)](https://www.linkedin.com/in/jggomezt/)
-[![Medium Badge](https://img.shields.io/badge/-@jggomezt-03a57a?style=flat-square&labelColor=000000&logo=Medium&link=https://medium.com/@jggomezt)](https://medium.com/@jggomezt)
 
